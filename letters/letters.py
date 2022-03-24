@@ -31,17 +31,16 @@ def letters_c(letter_mat):
 		for j in range(i + i // 2):
 			r = random.random()
 
-			letter_mat[i][np.random.randint(0, len(letter_mat[i]))] = np.random.randint(0, len(string.ascii_lowercase))
+			letter_mat[i][np.random.randint(0, len(letter_mat[i]))] = random.choice(string.ascii_lowercase)
 
 abc = string.ascii_lowercase
 
 w = 40
 h = 40
 
-letter_mat = [[abc.index('v') for i in range(w)] for _ in range(h)]
+letter_mat = [['A' for _ in range(w)] for _ in range(h)]
 
-
-letters_c(letter_mat)
+#letters_c(letter_mat)
 
 img_w = w * 20
 img_h = h * 20
@@ -56,14 +55,14 @@ for r, letters in enumerate(letter_mat):
 	for c, letter in enumerate(letters):
 		#font_size = max(5, r+c + np.random.randint(-20, 20))
 		#font_size = max(5, np.linalg.norm([c - w // 2, r - h // 2]) * 2.5 + np.random.randint(-20, 20))
-		font_size = np.interp(noise([5 * c / w, 5 * r / h]), [-1, 1], [0, 1]) * 60
+		font_size = np.interp(noise([5 * c / w, 5 * r / h]), [-0.7, 0.7], [5, 65])
 		font_size = int(font_size)
 		x = img.width / w * c
 		y = img.height / h * r - font_size / 2 + 5
 
 		font = ImageFont.truetype("1942.ttf", font_size)
 
-		img_edit.text((x,y), abc[letter], (0, 0, 0), font=font)
+		img_edit.text((x,y), letter, (0, 0, 0), font=font)
 	
 
 img.show()
