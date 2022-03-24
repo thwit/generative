@@ -1,0 +1,77 @@
+import java.util.ArrayList
+
+
+float cx, cy, cr;
+Rectangle[] rects;
+
+void setup() {
+  size(500, 500);
+  
+  cx = width / 2;
+  cy = height / 2;
+  
+  cr = 200;
+  
+  rects = new Rectangle[1000];
+  
+  frameRate(100);
+}
+
+void draw() {
+  float x = random(width);
+  float y = random(height);
+  float w = random(5, 50);
+  float h = random(5, 50);
+  
+  Rectangle rect = new Rectangle(x, y, w, h);
+  
+  
+  if (dist(x, y, cx, cy) < cr) {
+    boolean valid = true;
+    for (Rectangle other : rects) {
+      if (rect.collision(other)) {
+        break; 
+      }
+    }
+    if (valid) {
+      rect.display();
+    }
+  }
+}
+
+
+
+final class Rectangle {
+  final short x, y, w, h;
+  boolean state;
+
+  final static color c = 50;
+
+  Rectangle(float xx, float yy, float ww, float hh) {
+    x = (short) xx;
+    y = (short) yy;
+    w = (short) ww;
+    h = (short) hh;
+  }
+
+  boolean toggle() {
+    return state = !state;
+  }
+
+  boolean click() {
+    return mouseX > x & mouseX < x+w & mouseY > y & mouseY < y+h;
+  }
+
+  boolean collision(Rectangle other) {
+    return (this.x + this.w >= other.w &&
+            this.x <= other.x + other.w &&
+            this.y + this.h >= other.y &&
+            other.y <= other.y + other.h);
+  }
+
+  void display() {
+    fill(c);
+    stroke(c);
+    rect(x, y, w, h);
+  }
+}

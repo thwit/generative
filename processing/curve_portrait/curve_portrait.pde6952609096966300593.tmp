@@ -1,0 +1,46 @@
+PImage image;
+
+void setup() {
+  size(100, 100);
+  image = loadImage("white-bg.png");
+}
+
+// Convert color to gray
+int gray(int c) {
+  int r=(c&0x00FF0000)>>16; // red part
+  int g=(c&0x0000FF00)>>8; // green part
+  int b=(c&0x000000FF); // blue part
+  return (r+b+g)/3; 
+}
+
+int avgColor(int[] pixels, int px, int py, int stepSize, int w) {
+  int x = px - stepSize / 2;
+  int y = py - stepSize / 2;
+  int sum = 0;
+  
+  for (; x < px + stepSize / 2; x++) {
+    for (; y < py + stepSize / 2; y++) {
+      sum += gray(pixels[x + y * w]);
+    }
+  }
+  return sum / (stepSize * stepSize);
+}
+
+
+void draw() {
+  int w = image.width;
+  int h = image.height;
+  int stepSize = 20;
+  
+  image.loadPixels();
+  
+  for (int y = 0; y < h; y += stepSize) {
+    for (int x = 0; x < w; x += stepSize) {
+      int c = avgColor(image.pixels, x, y, stepSize, image.width);
+      fill(c);
+      rect(x, y, stepSize, stepSize);
+    }
+  }
+  
+  noLoop();
+}

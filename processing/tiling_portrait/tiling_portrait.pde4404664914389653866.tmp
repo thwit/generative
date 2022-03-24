@@ -1,0 +1,94 @@
+PImage img;
+
+void setup() {
+  img = loadImage("DSC_0416-2.jpg");
+  img.resize(750,0);
+  img.loadPixels();
+  size(750, 750);
+}
+
+// Convert color to gray
+int gray(int c) {
+  int r=(c&0x00FF0000)>>16; // red part
+  int g=(c&0x0000FF00)>>8; // green part
+  int b=(c&0x000000FF); // blue part
+  return (r+b+g)/3; 
+}
+
+color avgColor(int[] pixels, Rectangle rect, int w) {
+  int x = rect.x - rect.w / 2;
+  int y = rect.y - rect.h / 2;
+  int reds = 0;
+  int greens = 0;
+  int blues = 0;
+  
+  for (; x < rect.x + rect.w / 2; x++) {
+    for (; y < rect.y + rect.h / 2; y++) {
+      try {
+        reds += red(pixels[x + y * w]);
+        greens += green(pixels[x + y * w]);
+        blues += blue(pixels[x + y * w]);
+      } catch (ArrayIndexOutOfBoundsException e) {
+        continue;
+      }
+    }
+  }
+  println(reds / (rect.w * rect.h), greens / (rect.w * rect.h), blues / (rect.w * rect.h));
+  return color(reds / (rect.w * rect.h), greens / (rect.w * rect.h), blues / (rect.w * rect.h));
+}
+
+
+void draw() {
+  int x = int(random(width));
+  int y = int(random(height));
+  int w = int(random(5, 50));
+  int h = int(random(5, 50));
+  
+  Rectangle rect = new Rectangle(x, y, w, h);
+  
+  //rect.display(avgColor(img.pixels, rect, img.width));
+  rect.display(img.pixels[x + y * img.width]);
+  
+}
+
+
+final class Rectangle {
+  final short x, y, w, h;
+  boolean state;
+
+  final static color c = 50;
+
+  Rectangle(float xx, float yy, float ww, float hh) {
+    x = (short) xx;
+    y = (short) yy;
+    w = (short) ww;
+    h = (short) hh;
+  }
+
+  boolean toggle() {
+    return state = !state;
+  }
+
+  boolean click() {
+    return mouseX > x & mouseX < x+w & mouseY > y & mouseY < y+h;
+  }
+
+  boolean collision(Rectangle other) {
+    return (this.x + this.w >= other.x &&
+            this.x <= other.x + other.w &&
+            this.y + this.h >= other.y &&
+            this.y <= other.y + other.h);
+  }
+
+  void display() {
+    stroke(c);
+    fill(c);
+    rect(x, y, w, h);
+  }
+  
+  void display(color cc) {
+    stroke(cc);
+    fill(cc);
+    rect(x, y, w, h);
+  }
+}
