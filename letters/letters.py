@@ -38,9 +38,9 @@ abc = string.ascii_lowercase
 w = 40
 h = 40
 
-letter_mat = [['A' for _ in range(w)] for _ in range(h)]
+letter_mat = [['o' for _ in range(w)] for _ in range(h)]
 
-#letters_c(letter_mat)
+letters_c(letter_mat)
 
 img_w = w * 20
 img_h = h * 20
@@ -54,8 +54,11 @@ noise = PerlinNoise()
 for r, letters in enumerate(letter_mat):
 	for c, letter in enumerate(letters):
 		#font_size = max(5, r+c + np.random.randint(-20, 20))
+		#font_size = max(5, (r-c)*4 + np.random.randint(-20, 20))
+		font_size = max(5, r + np.random.randint(-20, 20))
 		#font_size = max(5, np.linalg.norm([c - w // 2, r - h // 2]) * 2.5 + np.random.randint(-20, 20))
-		font_size = np.interp(noise([5 * c / w, 5 * r / h]), [-0.7, 0.7], [5, 65])
+		#font_size = np.interp(noise([5 * c / w, 5 * r / h]), [-0.7, 0.7], [5, 50])
+		#letter = abc[int(np.interp(font_size, [5, 50], [0,len(abc)]))]
 		font_size = int(font_size)
 		x = img.width / w * c
 		y = img.height / h * r - font_size / 2 + 5
