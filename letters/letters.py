@@ -2,8 +2,7 @@ import string
 import random
 import numpy as np
 from perlin_noise import PerlinNoise
-
-from PIL import Image, ImageFont, ImageDraw
+from PIL import Image, ImageFont, ImageDraw, ImageOps
 
 def swap_random(seq):
 	idx = range(len(seq))
@@ -55,7 +54,7 @@ for r, letters in enumerate(letter_mat):
 	for c, letter in enumerate(letters):
 		#font_size = max(5, r+c + np.random.randint(-20, 20))
 		#font_size = max(5, (r-c)*4 + np.random.randint(-20, 20))
-		font_size = max(5, r + np.random.randint(-20, 20))
+		font_size = max(10 + np.random.randint(-5, 5), r + np.random.randint(-20, 20)) + 0.3 * np.interp(noise([5 * c / w, 5 * r / h]), [-0.7, 0.7], [5, 50])
 		#font_size = max(5, np.linalg.norm([c - w // 2, r - h // 2]) * 2.5 + np.random.randint(-20, 20))
 		#font_size = np.interp(noise([5 * c / w, 5 * r / h]), [-0.7, 0.7], [5, 50])
 		#letter = abc[int(np.interp(font_size, [5, 50], [0,len(abc)]))]
@@ -67,5 +66,8 @@ for r, letters in enumerate(letter_mat):
 
 		img_edit.text((x,y), letter, (0, 0, 0), font=font)
 	
+
+
+img = ImageOps.expand(img, border=(250,250),fill=(245, 245, 245))
 
 img.show()
