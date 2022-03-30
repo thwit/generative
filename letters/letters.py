@@ -50,11 +50,9 @@ letters_c(letter_mat)
 img_w = w * 20
 img_h = h * 20
 
-img = Image.new("RGBA", (img_w, img_h), (255, 255, 255, 100))
-txt = Image.new('RGBA', img.size, (255, 255, 255, 0))
+img = Image.new("RGB", (img_w, img_h), (255, 255, 255))
 
 img_edit = ImageDraw.Draw(img)
-txt_edit = ImageDraw.Draw(txt)
 
 noise = PerlinNoise()
 
@@ -73,10 +71,9 @@ for r, letters in enumerate(letter_mat):
 
         font = ImageFont.truetype("1942.ttf", font_size)
 
-        txt_edit.text((x, y), letter, (0, 0, 0, 255), font=font)
+        img_edit.text((x, y), letter, (0, 0, 0, 255), font=font)
 
-img = Image.alpha_composite(img, txt)
-img = ImageOps.expand(img, border=(250, 250), fill=(245, 245, 245))
+img = ImageOps.expand(img, border=(250, 250), fill=(255, 255, 255))
 
 
 img.show()
