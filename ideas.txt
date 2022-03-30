@@ -1,0 +1,1 @@
+1. Collect many sizz images, calculate average intensity of them based on some metric, paste (parts of) them into one image based on e.g. perlin noise (or get inspired by letters.py)
