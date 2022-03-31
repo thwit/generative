@@ -6,6 +6,7 @@ import pickle
 from PIL import Image, ImageDraw
 from perlin_noise import PerlinNoise
 import bisect
+from random import shuffle
 
 # https://stackoverflow.com/questions/56335315/in-a-python-list-which-is-sorted-find-the-closest-value-to-target-value-and-its
 # returns index, value
@@ -71,24 +72,35 @@ print(intensities)
 
 noise = PerlinNoise()
 
-for r in range(rows):
-    for c in range(cols):
+rand_rows = list(range(rows))
+rand_cols = list(range(cols))
+shuffle(rand_rows)
+shuffle(rand_cols)
+
+for r in rand_rows:
+    for c in rand_cols:
         x = c * img_width
         y = r * img_width
-        x_ = x + img_width
-        y_ = y + img_width
-
-        cx = x + img_width // 2
-        cy = y + img_width // 2
 
         noise_intensity = np.interp(noise([r / rows, c / cols]), [-0.7, 0.7], [0, 1])
+
         idx, _ = find_closest_index(intensities, noise_intensity)
         i, intensities = intensities[idx], np.delete(intensities, idx)
         path, img_paths = img_paths[idx], np.delete(img_paths, idx)
 
         try:
             sizz = Image.open(path)
-            sizz = sizz.resize((img_width, img_width), Image.ANTIALIAS)
+
+
+
+
+            maxwidth = 150 + np.random.randint(-50, 50)
+            maxheight = 150 + np.random.randint(-50, 50)
+
+            ratio = min(maxwidth/sizz.width, maxheight/sizz.height)
+
+
+            sizz = sizz.resize((int(sizz.width * ratio), int(sizz.height * ratio)), Image.ANTIALIAS)
             img.paste(sizz, (x, y))
             print(j+1, rows*cols, noise_intensity, i)
         except Exception as e:
