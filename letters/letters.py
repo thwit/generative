@@ -60,10 +60,10 @@ for r, letters in enumerate(letter_mat):
     for c, letter in enumerate(letters):
         # font_size = max(5, r+c + np.random.randint(-20, 20))
         # font_size = max(5, (r-c)*4 + np.random.randint(-20, 20))
-        font_size = max(10 + np.random.randint(-5, 5), r + np.random.randint(-20, 20)) + 0.3 * np.interp(
-            noise([5 * c / w, 5 * r / h]), [-0.7, 0.7], [5, 50])
+        #font_size = max(10 + np.random.randint(-5, 5), r + np.random.randint(-20, 20)) + 0.3 * np.interp(
+        #    noise([5 * c / w, 5 * r / h]), [-0.7, 0.7], [5, 50])
         # font_size = max(5, np.linalg.norm([c - w // 2, r - h // 2]) * 2.5 + np.random.randint(-20, 20))
-        # font_size = np.interp(noise([5 * c / w, 5 * r / h]), [-0.7, 0.7], [5, 50])
+        font_size = np.interp(noise([5 * c / w, 5 * r / h]), [-0.7, 0.7], [5, 50])
         # letter = abc[int(np.interp(font_size, [5, 50], [0,len(abc)]))]
         font_size = int(font_size)
         x = img.width / w * c
