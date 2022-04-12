@@ -86,7 +86,7 @@ def setup():
                 intensity = 0
                 offset = 1
                 t = TileNDot(c * tw + (tw-dw)/2, r * th + (th-dh)/2 + offset, dw, dh, n)
-                t.draw(pg, (intensity, intensity, intensity), stroke_weight)
+                t.draw(pg, stroke_weight, (intensity, intensity, intensity))
         
     pg.popMatrix()
     pg.endDraw()
