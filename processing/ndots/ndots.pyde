@@ -1,3 +1,38 @@
+# draws straight lines pencil-like
+def draw_line(x1, y1, x2, y2, sw, pg):
+    x1, y1, x2, y2 = float(x1), float(y1), float(x2), float(y2)
+    x_length = abs(x1-x2)
+    y_length = abs(y1-y2)
+    div_num = max(x_length, y_length)
+    if div_num == 0:
+        return
+    div_x = x_length/div_num
+    div_y = y_length/div_num
+    
+    div_num = int(div_num)
+    for i in range(div_num+1):
+        if(x1<x2):
+            new_x = x1 + div_x * i
+        else:
+            new_x = x1 - div_x * i
+        if y1 < y2:
+            new_y = y1 + div_y * i
+        else:
+            new_y = y1 - div_y * i
+            
+        random_dots(new_x, new_y, sw, pg);
+
+def random_dots(dot_x, dot_y, sw, pg):
+    dmi = 10
+    rand = sw * 2.5
+    for _ in range(dmi):
+        dir_x = random(-rand, rand)
+        dir_y = random(-rand, rand)
+        new_x = dot_x+dir_x
+        new_y = dot_y+dir_y
+        pg.circle(new_x, new_y, max(1, sw / 2))
+
+
 class TileNDot:
     def __init__(self, x, y, w, h, n, col, stroke_weight):
         self.x = x
@@ -14,7 +49,7 @@ class TileNDot:
             pg.stroke(*self.col)
         else:
             pg.stroke(self.col)
-        pg.strokeWeight(self.stroke_weight)
+        #pg.strokeWeight(self.stroke_weight)
         pg.noFill()
         
         pg.pushMatrix()
@@ -23,7 +58,8 @@ class TileNDot:
         for i in range(1, len(self.dots)):
             d1 = self.dots[i-1]
             d2 = self.dots[i]
-            pg.line(d1.x, d1.y, d2.x, d2.y)        
+            draw_line(d1.x, d1.y, d2.x, d2.y, self.stroke_weight, pg)   
+            #pg.line(d1.x, d1.y, d2.x, d2.y)
         
         pg.popMatrix()
 
@@ -58,7 +94,7 @@ def setup():
     
     # STYLE PARAMETERS
     stroke_cap = ROUND
-    stroke_weight = 10
+    stroke_weight = 2
     n = 8
     n_loop = 1
     
