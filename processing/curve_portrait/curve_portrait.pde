@@ -1,7 +1,7 @@
 PImage image;
 
 void setup() {
-  image = loadImage("ea.jpg");
+  image = loadImage("DSC_2518.jpg");
   image.resize(750,0);
   image.loadPixels();
   size(750, 750);
