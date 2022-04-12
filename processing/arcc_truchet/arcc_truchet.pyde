@@ -103,7 +103,7 @@ class Bezier:
         
         
 class NBezier:
-    def __init__(self, xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, n):
+    def __init__(self, xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, col, sw, n):
         
         
         self.xs1 = xs1
@@ -114,12 +114,14 @@ class NBezier:
         self.xe2 = xe2
         self.ye1 = ye1
         self.ye2 = ye2
+        self.col = col
+        self.sw = sw
         self.n = n
         
     def draw(self, pg):
         pg.noFill()
-        pg.stroke(0,0,0)
-        pg.strokeWeight(1)
+        pg.stroke(self.col)
+        pg.strokeWeight(self.sw)
         
         
         xs1_ = min(self.xs1, self.xs2)
@@ -238,7 +240,7 @@ class TileBezier:
         pg.popMatrix()
         
     
-def setu2p():
+def setup():
     size(700, 700)
     pwidth = pheight = 1000
     pg = createGraphics(pwidth, pheight)
@@ -282,7 +284,7 @@ def setu2p():
 
     
     
-def setup():
+def setup3():
     size(700, 700)
     pwidth = pheight = 1000
     pg = createGraphics(pwidth, pheight)
@@ -301,7 +303,7 @@ def setup():
     tr = 125
     n_loop = 1
     n = 10
-    sw = 1
+    sw = 3
     padding = 1
     spacing = 1
     cp_mult = 1
@@ -309,10 +311,6 @@ def setup():
     rows = pheight // tr - padding
     cols = pwidth // tr - padding
 
-
-
-    
-    
     for _ in range(n_loop):
         for r in range(padding, rows, 2):
             for c in range(padding, cols, 2):
@@ -334,7 +332,7 @@ def setup():
                 xe2 = xe1
                 ye2 = ye1 + tr
                 
-                nb = NBezier(xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, n)
+                nb = NBezier(xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, strk, sw, n)
                 nb.draw(pg)
         
     print('done')
