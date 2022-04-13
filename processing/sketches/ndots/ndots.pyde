@@ -30,7 +30,7 @@ class TileNDot:
         pg.popMatrix()
 
 def setup():
-    size(500, 750)
+    size(500, 150)
     
     #### COLOR PARAMTERS
     bg_col = 0xFFFFFFFC
