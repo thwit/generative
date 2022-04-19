@@ -40,7 +40,7 @@ class Tile:
             
         pg.popMatrix()
 
-def setup1():
+def setup():
     size(700, 700)
     pwidth = pheight = 2100
     pg = createGraphics(pwidth, pheight)
@@ -54,7 +54,7 @@ def setup1():
     rows = pheight // th - padding
     cols = pwidth // tw - padding
     sw = 7
-    n = 1
+    n = 5
     n_loop = 1
 
     bg = 0xFFF6E6E4
@@ -240,7 +240,7 @@ class TileBezier:
         pg.popMatrix()
         
     
-def setup():
+def setup2():
     size(700, 700)
     pwidth = pheight = 1000
     pg = createGraphics(pwidth, pheight)
