@@ -1,6 +1,9 @@
 from __future__ import division
 import random as rrandom
 
+def dist_noise(x,y, strength=0.9, size_=5):
+    return noise(x,y,strength*size_*noise(x,y))
+
 def hex_to_rgb(h):
     h = h.lstrip('#')
     return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))
@@ -96,14 +99,14 @@ def setup1():
 def setup():
     size(600, 750)
     init_seed = int(random(100000))
-    init_seed = 459
-    noiseSeed(459)
+    noiseSeed(init_seed)
     print('Initial seed: ' + str(init_seed))
-        
+
+
     
     #### COLOR DEFINITIONS
-    colors = ['#dde0d7','#fff0d7','#baeaf4','#4dabab','#1089b1']
-    bg_col = '#cce5e6'
+    colors = ['5d2904','#82440b','#b7751f','#8b6e28','#d4ba66']
+    bg_col = '#ab7f39'
     filler_col = '#e8a60e'
     colors = [hex_to_rgb(c) for c in colors]
     #rrandom.shuffle(colors)
@@ -125,12 +128,12 @@ def setup():
     
     # STYLE PARAMETERS
     stroke_cap = ROUND
-    radius = 1
+    radius = 2
     n_loop = 1
     sc_x = 0.01
-    sc_y = 0.001
-    jitter_pos = 1
-    jitter_radius = 0
+    sc_y = 0.003
+    jitter_pos = 2
+    jitter_radius = 1
     
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
@@ -151,7 +154,7 @@ def setup():
     for seed in range(min(1, len(colors))):
         for x in range(0, pwidth, d):
             for y in range(0, pheight, d):
-                n = noise((x+offset_x) * sc_x, (y+offset_y) * sc_y) + random(-0.15, 0.15)
+                n = dist_noise((x+offset_x) * sc_x, (y+offset_y) * sc_y) + random(-0.15, 0.15)
                 clr = None
                 draw_ = False
                 if n < 0.2:
