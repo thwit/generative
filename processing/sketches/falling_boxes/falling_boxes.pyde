@@ -15,14 +15,14 @@ def setup():
     pwidth, pheight = width*scale_, height*scale_
     
     # Margins around the drawing
-    margin = 100 * scale_
+    margin = 50 * scale_
     
     # Margins between each grid cell
     grid_margin = 5 * scale_
     
     # Outer size of grid cell
     tw = 100 * scale_
-    th = 10 * scale_
+    th = 5 * scale_
     
     # Inner size of grid cell
     dw = tw - grid_margin
@@ -46,7 +46,7 @@ def setup():
     # Set background color
     pg.fill(bg_col)
     pg.rect(-1, -1, pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
-    pg.rectMode(CENTER)
+    #pg.rectMode(CENTER)
     
     # Push matrix and translate coordinate system so (0,0) is at (margin, margin)
     pg.pushMatrix()
@@ -54,18 +54,19 @@ def setup():
     
     for _ in range(n_loop):
         for r in range(1, rows):
-            for c in range(1, cols):
+            for c in range(1, cols-1):
                 # Coordinates, heights, and widths for the drawn grid:
                 # (x                 , y                 , w , h )
                 # (c * tw + (tw-dw)/2, r * th + (th-dh)/2, dw, dh)
                 pg.strokeWeight(stroke_weight)
-                
+                if c > 1 and False:
+                    pg.line(c*tw + grid_margin/2, 0, c*tw + grid_margin/2, height)
+                    pg.line(c*tw - grid_margin/2, 0, c*tw - grid_margin/2, height)
                 pg.pushMatrix()
                
-                pg.translate(c*tw + (tw-dw)/2, r * th + (th-dh)/2)
-                #pg.rotate((map(r, 0, rows, 0, HALF_PI/1)))
-                pg.rotate((map(r, 0, rows, 0, HALF_PI)))
-                pg.rect(0, 0, dw, dh)
+                pg.translate(c*tw + grid_margin/2 + dw/2, r * th + grid_margin/2 + dh/2)
+                pg.rotate(random(-map(r, 0, rows, 0, QUARTER_PI), map(r, 0, rows, 0, QUARTER_PI)))
+                pg.rect(-dw/2, -dh/2, dw, dh)
                 pg.popMatrix()
                 
     # End drawing on PGraphics    
