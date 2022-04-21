@@ -162,7 +162,7 @@ class TileBezier:
         pg.pushMatrix()
         pg.translate(self.x, self.y)
         pg.rotate(self.rot)
-      
+    
         for i in range(n//2, -n//2, -1):
             for k, rad1, rad2 in [(1, 0, HALF_PI), (-1, PI, PI + HALF_PI)]:
                 x1 = self.r * sin(rad1)
@@ -197,8 +197,8 @@ class TileBezier:
         pg.translate(self.x, self.y)
         pg.rect(-self.w / 2, -self.h / 2, self.w, self.h)
         pg.popMatrix()
-        
     
+
 def setup2():
     size(700, 700)
     pwidth = pheight = 1000
