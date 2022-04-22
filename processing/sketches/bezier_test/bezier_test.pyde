@@ -171,8 +171,7 @@ def setu2p():
  
 
 def setup():
-    
-    global pg, bg_col, strk_col, n, stroke_weight
+    global pg, bg_col, strk_col, n, stroke_weight, th, xs1, xs2, ys1, ys2, nb, nbeziers
     size(800, 800)
     frameRate(60)
     pg = createGraphics(width, height)
@@ -181,60 +180,57 @@ def setup():
     bg_col = 0xFFF6E6E4
     strk_col = 0xFFBB6464
     stroke_weight = 2
-    n = 13
+    n = 20
+    
+    th = 100
 
+    xs1 = xs2 = ys1 = ys2 = nb = None
+    nbeziers = []
+    
+    
+def mouseClicked():
+    global pg, bg_col, strk_col, n, stroke_weight, th, xs1, xs2, ys1, ys2, nb, nbeziers
+    
+    if xs1 is None:
+        xs1 = mouseX - th // 2
+        xs2 = mouseX + th // 2
+        ys1 = mouseY
+        ys2 = mouseY
+    elif xs1 is not None:
+        xe1 = mouseX
+        ye1 = mouseY
+        
+        xe2 = xe1
+        ye2 = ye1 + th
+        
+        nb = NBezier(xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, strk_col, stroke_weight, n)
+        nbeziers.append(nb)
+        
+        xs1 = None
  
 def draw():
-    global pg, bg_col, strk_col, n, stroke_weight
-    pg.beginDraw();
-    pg.background(102);
-    pg.stroke(255);
+    global pg, bg_col, strk_col, n, stroke_weight, th, xs1, xs2, ys1, ys2, nb, nbeziers
+    pg.beginDraw()
+    pg.background(102)
+    pg.stroke(255)
     
-    th = 50
-    
-    for x in range(0, width-100, width // 3):
-        for y in range(0, height-100, height // 3):
-            # NBezier(xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, n)
-            xs1 = x
-            ys1 = y
-            
-            xs2 = xs1 + th
-            ys2 = ys1
-            
-            
-            xe1 = x + width // 3
-            ye1 = y + height // 3
-            
-            xe2 = xe1
-            ye2 = ye1 + th
-            
-            nb = NBezier(xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, strk_col, stroke_weight, n)
-            nb.draw(pg)
-    
-            
-            
-            
-    # NBezier(xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, n)
-    xs1 = width // 2
-    ys1 = height // 2
-    
-    xs2 = xs1 + th
-    ys2 = ys1
-    
-    
-    xe1 = mouseX
-    ye1 = mouseY
-    
-    xe2 = xe1
-    ye2 = ye1 + th
-    
-    nb = NBezier(xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, strk_col, stroke_weight, n)
-    nb.draw(pg)
-    
+    for nb_ in nbeziers:
+        nb_.draw(pg)
         
     
     
+    if xs1 is not None:
+        # NBezier(xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, n)     
+        xe1 = mouseX
+        ye1 = mouseY
+        
+        xe2 = xe1
+        ye2 = ye1 + th
+        
+        nb = NBezier(xs1, ys1, xs2, ys2, xe1, ye1, xe2, ye2, strk_col, stroke_weight, n)
+        nb.draw(pg)
     
+            
     
     
     pg.endDraw();
