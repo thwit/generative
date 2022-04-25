@@ -1,9 +1,9 @@
-import texture_draw as td
+import pens
 import geometry as gm
 import tools
 
 def setup():
-    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin
+    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight
     size(600, 600)
 
     #### COLOR DEFINITIONS
@@ -17,7 +17,7 @@ def setup():
     
     #### LAYOUT PARAMETERS
     # Scale applied to width and height to get PGraphics drawing size
-    scale_ = 1
+    scale_ = 3
     
     # PGraphics drawing size
     pwidth, pheight = width*scale_, height*scale_
@@ -27,11 +27,12 @@ def setup():
     
     # STYLE PARAMETERS
     stroke_cap = ROUND
-    stroke_weight = 2
+    stroke_weight = 3
     n_loop = 1
     
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
+    pen = pens.Pen3(pg)
     
     flag = True
     
@@ -42,7 +43,7 @@ def keyReleased():
         flag = True
     
 def draw():
-    global flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors
+    global flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight
     
     if flag:
         print('Generating new set of Mondrian squares')
@@ -51,7 +52,7 @@ def draw():
         
         pg.beginDraw()
     
-        pg.strokeWeight(2)
+        pen.strokeWeight(stroke_weight)
         # Set background color
         pg.fill(*bg_col)
         pg.rect(-1, -1, pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
@@ -61,7 +62,7 @@ def draw():
         pg.translate(margin, margin)
     
         mondrian.generate()
-        mondrian.draw(pg)
+        mondrian.draw(pen)
         
         print('New set of Mondrian squares generated and drawn')
             
