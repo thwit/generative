@@ -116,6 +116,18 @@ def draw():
         
         draw2()
         
+        
+        pg.loadPixels()
+
+        rand = 0.
+        for i in range(len(pg.pixels)):
+            r = random(1 - rand, 1 + rand)
+            h = pg.hue(pg.pixels[i])
+            s = pg.saturation(pg.pixels[i])
+            b = pg.brightness(pg.pixels[i])
+            pg.pixels[i] = pg.color(h, s, b*r)
+        pg.updatePixels()
+        
         # End drawing on PGraphics    
         pg.popMatrix()
         pg.endDraw()
