@@ -13,9 +13,9 @@ def setup():
     bg_col = '#fffffa'
     strk_col = '#000000'
     
-    bg_col = tools.hex_to_rgb(bg_col)
-    strk_col = tools.hex_to_rgb(strk_col)
-    colors = tools.hex_to_rgb(colors)
+    bg_col = tools.hex_to_hsb(bg_col)
+    strk_col = tools.hex_to_hsb(strk_col)
+    colors = tools.hex_to_hsb(colors)
     
     #### LAYOUT PARAMETERS
     # Scale applied to width and height to get PGraphics drawing size
@@ -34,7 +34,14 @@ def setup():
     
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
-    pen = pens.PenBasic(pg, fills.LayerFill(pg))
+    pen = pens.PenDash(pg, fills.LayerFill(pg))
+    
+    pg.beginDraw()
+    pg.colorMode(HSB, 360, 100, 100)
+    #pg.colorMode(RGB, 255, 255, 255)
+    pen.strokeWeight(stroke_weight)
+    
+    pg.endDraw()
     #pen.set_clean(True)
     #pen.prob = 0
     
@@ -78,7 +85,7 @@ def draw2():
     cp = gm.CirclePack(0, 0, pwidth, pheight, 500, 5, pwidth/3)
     circles = cp.generate()
     for c in circles:
-        if random(1) < 0.2:
+        if random(1) < 0.5:
             pen.fill(colors[int(random(len(colors)))])
         c.draw(pen)
         pen.noFill()
@@ -93,12 +100,16 @@ def draw():
         
         pg.beginDraw()
     
-        pen.strokeWeight(stroke_weight)
-        pen.stroke(strk_col)
+        
         # Set background color
         pen.fill(bg_col)
+        pen.noStroke()
         pen.rect(PVector(-1, -1), pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
         pen.noFill()
+        
+        
+        pen.stroke(strk_col)
+        
         # Push matrix and translate coordinate system so (0,0) is at (margin, margin)
         pg.pushMatrix()
         pg.translate(margin, margin)
