@@ -55,17 +55,16 @@ def draw():
     
         pen.strokeWeight(stroke_weight)
         # Set background color
-        pen.fill(bg_col)
-        pen.rect(PVector(-1, -1), pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
         pg.fill(*bg_col)
         pg.rect(-1, -1, pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
         
         # Push matrix and translate coordinate system so (0,0) is at (margin, margin)
         pg.pushMatrix()
         pg.translate(margin, margin)
+    
         pen.stroke(strk_col)
-        mondrian.generate()
-        mondrian.draw(pen)
+        pen.fill(colors[2])
+        pen.circle(PVector(pwidth/2, pheight/2), pheight/3)
         
         print('New set of Mondrian squares generated and drawn')
             
