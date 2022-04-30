@@ -6,7 +6,7 @@ import fills
 
 def setup():
     global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin, tw, th
-    size(501, 501)
+    size(500, 500)
 
     #### COLOR DEFINITIONS
     colors = ['#2a241b','#67482f','#ac3d20','#ebddd8','#3a3f43']
@@ -70,30 +70,72 @@ def keyReleased():
     
     if key == ENTER:
         flag = True
+
+
+def draw2():
+    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin
+    pen.noFill()
+
+                
+    pen.fill(fill_col)
+    pen.stroke(fill_col)
+    r = 100
+    c = PVector(pwidth/2, pheight/2)
+    pen.circle(c, r)
     
+    pen.rect(PVector(100, 100), 200, 100)
+    for x in range(0, pwidth, 10):
+        break
+        d = r**2 - (x - c.x)**2
+        m = 0
+        if d > 0:
+            y = sqrt(d) + c.y
+            
+            y_ = y - (y - c.y) * 2
+        
+            pen.line(PVector(x, 0), PVector(x, y_ - m))
+            pen.line(PVector(x, y + m), PVector(x, pheight))
+        elif d < 0:
+            pen.line(PVector(x, 0), PVector(x, pheight))
+            
+        # Else d == 0
+        else:
+            m = 0
+            pen.line(PVector(x, 0), PVector(x, c.y - m))
+            pen.line(PVector(x, c.y + m), PVector(x, pheight))
+    
+    
+    
+    pen.stroke((0,0,0))
+    pen.noFill()
+
         
 def draw3():
     global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin
     pen.noFill()
+
+    pen.stroke((0,0,0))
+    
     for r in range(1, rows-1):
         for c in range(1, cols-1):
             # Coordinates, heights, and widths for the drawn grid:
             # (x                 , y                 , w , h )
             # (c * tw + (tw-dw)/2, r * th + (th-dh)/2, dw, dh)
-            if random(1) < 0.05 or True:
-                pass
+            if random(1) < 0.05:
                 pen.fill((0,0,0))
             else:
                 pen.noFill()
             pg.pushMatrix()
             
             pg.translate(c*tw + grid_margin/2 + dw/2, r * th + grid_margin/2 + dh/2)
-            pg.rotate(map(dist(c * tw + (tw-dw)/2, r * th + (th-dh)/2, pwidth/2, pheight/2), 0, dist(0,0,pwidth/2,pheight/2), 0, PI))
+            #pg.rotate(map(dist(c * tw + (tw-dw)/2, r * th + (th-dh)/2, pwidth/2, pheight/2), 0, dist(0,0,pwidth/2,pheight/2), 0, PI))
+            pg.rotate(map(dist(c*tw + grid_margin/2 + dw/2, r * th + grid_margin/2 + dh/2, pwidth/2, pheight/2), 0, 500, 0, PI))
             pen.rect(PVector(-dw/2, -dh/2), dw, dh)
             pg.popMatrix()
-            
+                
     pen.fill(fill_col)
-    #pen.circle(PVector(pwidth/2, pheight/2), 150)
+    pen.stroke(fill_col)
+    pen.circle(PVector(pwidth/2, pheight/2), 250)
     pen.noFill()
 
 
@@ -124,7 +166,7 @@ def draw():
         draw3()
         
         pg.loadPixels()
-        tools.noisify_brightness(pg.pixels, pg)
+        #tools.noisify_brightness(pg.pixels, pg)
         pg.updatePixels()
            
         # End drawing on PGraphics    
