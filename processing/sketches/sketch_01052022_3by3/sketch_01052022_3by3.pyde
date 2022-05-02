@@ -11,7 +11,9 @@ def setup():
     #### COLOR DEFINITIONS
     colors = ['#F7C85E', '#F3EBD6', '#EABA92', '#4A3635', '#BA8041']
     colors = ['#678b8b','#96a4c1','#c3d2e5','#f3a195','#7d6f86']
+    colors = ['#161f1f','#1e0b08','#5e100a','#b3320b','#d75c1e']
     bg_col = '#fffffa'
+    bg_col = '#3a1814'
     strk_col = '#000000'
     fill_col = '#B22727'
     
@@ -121,7 +123,7 @@ def draw():
         
             
             # Set background color
-            pg.fill(0,0,50)
+            pg.fill(0,0,70)
             pg.noStroke()
             pg.rect(-1, -1, pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
             pg.noFill()
@@ -145,7 +147,7 @@ def draw():
             draw2()
             
             pg.loadPixels()
-            tools.noisify_brightness(pg.pixels, pg)
+            #tools.noisify_brightness(pg.pixels, pg)
             pg.updatePixels()
             
             # End drawing on PGraphics    
