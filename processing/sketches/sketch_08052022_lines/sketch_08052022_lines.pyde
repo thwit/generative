@@ -75,6 +75,8 @@ def draw3():
     global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin
     pen.noFill()
     pen.stroke((0,0,0))
+    pen.rect(PVector(0,0), pwidth, pheight)
+    #pg.rectMode(CENTER)
 
     c = PVector(pwidth / 2, pheight / 2)
     
@@ -85,17 +87,17 @@ def draw3():
     marg = 25
     
     s = pwidth // 10
+    pen.fill((0,0,0))
+    pen.circle(c, 10)
     pen.fill((0,0,100))
     
     for x in range(0, pwidth, s):
         for y in range(0, pheight, s):
-            ul = PVector(x + marg, y + marg)
-            for _ in range(3):
+            ul = PVector(x + marg / 2, y + marg / 2)
+            for _ in range(20):
                 pen.rect(ul, s - marg, s - marg)
-                offset = (c - PVector(ul.x + (s - marg) / 2, ul.y + (s - marg) / 2)).normalize() * 3
+                offset = (c - PVector(ul.x + (s - marg) / 2, ul.y + (s - marg) / 2)).normalize() * 0.5
                 
-                if x == s * 2 and y == s * 2:
-                    break
                 ul_new = ul + offset
                 
                 ul = ul_new
