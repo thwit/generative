@@ -5,7 +5,7 @@ import geometry as gm
 import fills
 
 def setup():
-    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin, tw, th
+    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin, tw, th, scale_
     size(500, 500)
 
     #### COLOR DEFINITIONS
@@ -21,7 +21,7 @@ def setup():
     
     #### LAYOUT PARAMETERS
     # Scale applied to width and height to get PGraphics drawing size
-    scale_ = 1
+    scale_ = 2
     
     # PGraphics drawing size
     pwidth, pheight = width*scale_, height*scale_
@@ -52,7 +52,7 @@ def setup():
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
     pen = pens.PenRandom(pg, fills.ScannerFill(pg))
-    pen = pens.PenBasic(pg, fills.BasicFill(pg))
+    #pen = pens.PenBasic(pg, fills.BasicFill(pg))
     
     pg.beginDraw()
     pg.colorMode(HSB, 360, 100, 100)
@@ -72,7 +72,7 @@ def keyReleased():
         flag = True
     
 def draw3():
-    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin
+    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin, scale_
     pen.noFill()
     pen.stroke((0,0,0))
     pen.rect(PVector(0,0), pwidth, pheight)
@@ -84,19 +84,17 @@ def draw3():
     t = 0
     
     r = 500
-    marg = 25
+    marg = 25 * scale_
     
     s = pwidth // 10
-    pen.fill((0,0,0))
-    pen.circle(c, 10)
-    pen.fill((0,0,100))
+    #pen.fill((0,0,100))
     
     for x in range(0, pwidth, s):
         for y in range(0, pheight, s):
             ul = PVector(x + marg / 2, y + marg / 2)
-            for _ in range(20):
+            for _ in range(4):
                 pen.rect(ul, s - marg, s - marg)
-                offset = (c - PVector(ul.x + (s - marg) / 2, ul.y + (s - marg) / 2)).normalize() * 0.5
+                offset = (c - PVector(ul.x + (s - marg) / 2, ul.y + (s - marg) / 2)).normalize() * 10
                 
                 ul_new = ul + offset
                 
@@ -123,7 +121,7 @@ def draw():
         pg.noFill()
         pen.fill(bg_col)
         pen.noStroke()
-        pen.rect(PVector(-1, -1), pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
+        pen.rect(PVector(-3, -3), pwidth + margin * 2 + 10, pheight + margin * 2 + 10)
         pen.noFill()
         
         
