@@ -21,7 +21,7 @@ def setup():
     
     #### LAYOUT PARAMETERS
     # Scale applied to width and height to get PGraphics drawing size
-    scale_ = 2
+    scale_ = 1
     
     # PGraphics drawing size
     pwidth, pheight = width*scale_, height*scale_
@@ -52,7 +52,7 @@ def setup():
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
     pen = pens.PenRandom(pg, fills.ScannerFill(pg))
-    #pen = pens.PenBasic(pg, fills.BasicFill(pg))
+    pen = pens.PenBasic(pg, fills.BasicFill(pg))
     
     pg.beginDraw()
     pg.colorMode(HSB, 360, 100, 100)
@@ -75,7 +75,7 @@ def draw3():
     global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin, scale_
     pen.noFill()
     pen.stroke((0,0,0))
-    pen.rect(PVector(0,0), pwidth, pheight)
+    #pen.rect(PVector(0,0), pwidth, pheight)
     #pg.rectMode(CENTER)
 
     c = PVector(pwidth / 2, pheight / 2)
@@ -84,25 +84,44 @@ def draw3():
     t = 0
     
     r = 500
-    marg = 25 * scale_
+    marg = 100 * scale_
     
-    s = pwidth // 10
+    s = pwidth // 2
     #pen.fill((0,0,100))
+    
+    points = []
     
     for x in range(0, pwidth, s):
         for y in range(0, pheight, s):
             ul = PVector(x + marg / 2, y + marg / 2)
             for _ in range(4):
-                pen.rect(ul, s - marg, s - marg)
-                offset = (c - PVector(ul.x + (s - marg) / 2, ul.y + (s - marg) / 2)).normalize() * 10
+                #pen.rect(ul, s - marg, s - marg)
+                offset = (c - PVector(ul.x + (s - marg) / 2, ul.y + (s - marg) / 2)).normalize() * 15
                 
+                points.extend(pen.rectPanto(ul, s - marg, s - marg))   
                 ul_new = ul + offset
                 
                 ul = ul_new
+
+
+    tools.to_panto(points, pwidth, pheight)
+    
+    x = []
+    y = []
+
+    for p in points:
+        if not isinstance(p, PVector):
+            x.append(int(p))
+            y.append(int(p))
+        else:
+            x.append(round(p.x, 5))
+            y.append(round(p.y, 5))
             
-            
-            
-        
+    print('x = ' + str(x))
+    print('y = ' + str(y))
+    
+    print()
+    print(len(x))
     
     pen.noFill()
 
