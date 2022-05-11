@@ -76,8 +76,8 @@ def draw3():
     global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin
     pen.noFill()
     pen.stroke((0,0,0))
-    mono = createFont("Stroke.ttf", 128);
-    pg.textFont(mono);
+    #mono = createFont("Stroke.ttf", 128);
+    #pg.textFont(mono);
     
     pg.textAlign(CENTER, CENTER)
     pen.rect(PVector(0,0),pwidth,pheight)
@@ -89,15 +89,13 @@ def draw3():
         i = 0
         for y in range(0, pwidth, sy):
             for x in range(0, pheight, sx):
-                if k == 0:
-                    pen.prob = 0.5
-                    pen.rect(PVector(x,y), sx, sy)
                 
                 pg.fill(*(0,0,0,255))
                 font_size = 15 + i
-                pg.textSize(font_size)
+                pg.textSize(50)
                 
-                pg.text(i, x + sx / 2 + randomGaussian(), y + sy / 2 + randomGaussian())
+                for _ in range(i+1):
+                    pg.text(i, x + sx / 2 + randomGaussian() * 2, y + sy / 2 + randomGaussian() * 2)
                 #pg.text(i, x + sx / 2, y + sy / 2)
                 pg.noFill()
                 i+=1

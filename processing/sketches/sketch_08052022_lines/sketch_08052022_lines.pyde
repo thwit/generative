@@ -21,10 +21,11 @@ def setup():
     
     #### LAYOUT PARAMETERS
     # Scale applied to width and height to get PGraphics drawing size
-    scale_ = 1
+    scale_ = 3
     
     # PGraphics drawing size
     pwidth, pheight = width*scale_, height*scale_
+    #pwidth, pheight = 500, 500
     
     # Margins around the drawing
     margin = 100
@@ -75,7 +76,7 @@ def draw3():
     global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin, scale_
     pen.noFill()
     pen.stroke((0,0,0))
-    #pen.rect(PVector(0,0), pwidth, pheight)
+    pen.rect(PVector(0,0), pwidth, pheight)
     #pg.rectMode(CENTER)
 
     c = PVector(pwidth / 2, pheight / 2)
@@ -83,11 +84,11 @@ def draw3():
     inc = 0.005
     t = 0
     
-    r = 500
-    marg = 100 * scale_
+    n = 4
     
-    s = pwidth // 2
-    #pen.fill((0,0,100))
+    s = pwidth // n
+
+    marg = 25 * scale_
     
     points = []
     
@@ -95,8 +96,8 @@ def draw3():
         for y in range(0, pheight, s):
             ul = PVector(x + marg / 2, y + marg / 2)
             for _ in range(4):
-                #pen.rect(ul, s - marg, s - marg)
-                offset = (c - PVector(ul.x + (s - marg) / 2, ul.y + (s - marg) / 2)).normalize() * 15
+                pen.rect(ul, s - marg, s - marg)
+                offset = (c - PVector(ul.x + (s - marg) / 2, ul.y + (s - marg) / 2)).normalize() * 12
                 
                 points.extend(pen.rectPanto(ul, s - marg, s - marg))   
                 ul_new = ul + offset
@@ -104,24 +105,10 @@ def draw3():
                 ul = ul_new
 
 
-    tools.to_panto(points, pwidth, pheight)
+    x, y = tools.to_panto_a4(points, pwidth, pheight)
     
-    x = []
-    y = []
-
-    for p in points:
-        if not isinstance(p, PVector):
-            x.append(int(p))
-            y.append(int(p))
-        else:
-            x.append(round(p.x, 5))
-            y.append(round(p.y, 5))
-            
-    print('x = ' + str(x))
-    print('y = ' + str(y))
-    
-    print()
-    print(len(x))
+    print 'x =', x
+    print 'y =', y
     
     pen.noFill()
 
@@ -162,4 +149,5 @@ def draw():
         
         # Display final drawing and save to .png in same folder
         image(pg, 0, 0, width, height)
+        
         pg.save("template.png")
