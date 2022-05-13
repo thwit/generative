@@ -80,14 +80,18 @@ def draw2():
     v1 = PVector(0, 0)
     v2 = PVector(pwidth, pheight)
     
-    step = 10
+    step = 30
+    points = []
     
-    for y in range(step, pheight+1, step):
-        pen.line(PVector(0, y), v2)
+    for x in range(0, pwidth+1, step):
+        pen.line(PVector(x, 0), v2)
+        points.extend(pen.line_panto(PVector(x, 0), v2))
         
-    for y in range(0, pheight+1-step, step):
-        pen.line(PVector(pwidth, y), v1)
+    for x in range(0, pwidth+1-step, step):
+        pen.line(PVector(x, pheight), v1)
+        points.extend(pen.line_panto(PVector(x, pheight), v1))
     
+    tools.to_panto_a4(points, pwidth, pheight, center=False, upscale=True)
     
     pen.noFill()
     
@@ -117,7 +121,7 @@ def draw():
     
         
         # Set background color
-        pg.fill(0,0,50)
+        pg.fill(0,0,70)
         pg.noStroke()
         pg.rect(-1, -1, pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
         pg.noFill()
@@ -133,7 +137,7 @@ def draw():
         pg.pushMatrix()
         pg.translate(margin, margin)
         
-        draw3()
+        draw2()
         
         pg.loadPixels()
         #tools.noisify_brightness(pg.pixels, pg)
