@@ -131,9 +131,8 @@ def draw():
             pen.noStroke()
             pen.rect(PVector(-1, -1), pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
             pen.noFill()
-            print 'bg'
-            
-            
+            print('bg')
+
             pen.stroke(strk_col)
             
             # Push matrix and translate coordinate system so (0,0) is at (margin, margin)
