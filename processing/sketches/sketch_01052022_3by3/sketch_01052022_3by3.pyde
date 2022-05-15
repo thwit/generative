@@ -5,15 +5,15 @@ import geometry as gm
 import fills
 
 def setup():
-    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin, tw, th
+    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin, tw, th, bg_col2
     size(600, 600)
 
     #### COLOR DEFINITIONS
     colors = ['#F7C85E', '#F3EBD6', '#EABA92', '#4A3635', '#BA8041']
-    colors = ['#678b8b','#96a4c1','#c3d2e5','#f3a195','#7d6f86']
-    colors = ['#161f1f','#1e0b08','#5e100a','#b3320b','#d75c1e']
+    #colors = ['#678b8b','#96a4c1','#c3d2e5','#f3a195','#7d6f86']
+    #colors = ['#161f1f','#1e0b08','#5e100a','#b3320b','#d75c1e']
     bg_col = '#fffffa'
-    bg_col = '#3a1814'
+    #bg_col = '#3a1814'
     strk_col = '#000000'
     fill_col = '#B22727'
     
@@ -54,7 +54,7 @@ def setup():
     
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
-    pen = pens.PenRandom(pg, fills.ScannerFill(pg))
+    pen = pens.PenBasic(pg, fills.CurveFill(pg))
     #pen = pens.PenBasic(pg, fills.BasicFill(pg))
     
     pg.beginDraw()
@@ -76,7 +76,7 @@ def keyReleased():
 
 
 def draw2():
-    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin
+    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, dw, dh, rows, cols, grid_margin, bg_col2
     pen.noFill()
     pen.noStroke()
     
@@ -115,7 +115,7 @@ def draw2():
 
 
 def draw():
-    global flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight
+    global flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight, bg_col2
     if flag:
         flag = False
         for _ in range(1):
@@ -131,6 +131,7 @@ def draw():
             pen.noStroke()
             pen.rect(PVector(-1, -1), pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
             pen.noFill()
+            print 'bg'
             
             
             pen.stroke(strk_col)
@@ -157,4 +158,4 @@ def draw():
             # Display final drawing and save to .png in same folder
             image(pg, 0, 0, width, height)
             #pg.save(str(seed) + '.png')
-            pg.save('template.png')
+            tools.save_image(pg, seed)

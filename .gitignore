@@ -2,5 +2,3 @@ processing-4.0b7
 processing-3.5.4
 processing/modes/*
 BrachioGraph
-processing/sketches/**/*.png
-!processing/sketches/**/template.png
