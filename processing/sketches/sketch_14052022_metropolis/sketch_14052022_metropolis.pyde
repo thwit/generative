@@ -6,7 +6,7 @@ import fills
 
 
 def setup():
-    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, scale_, seed
+    global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, scale_, seed, palette_id
     size(500, 700)
 
     # SEEDS
@@ -16,6 +16,8 @@ def setup():
 
     # COLOR DEFINITIONS
     colors = ['#8fa57f', '#FA8246', '#FEB139', '#F6F54D']
+    colors = ['#252524','#505049','#808580','#c9cbca','#e4d7be']
+    colors, palette_id = tools.get_color_palette()
     bg_col = '#fffffa'
     strk_col = '#000000'
 
@@ -26,7 +28,6 @@ def setup():
     # LAYOUT PARAMETERS
     # Scale applied to width and height to get PGraphics drawing size
     scale_ = 1
-    print('heyy ' + ())
 
     # PGraphics drawing size
     pwidth, pheight = width * scale_, height * scale_
@@ -40,7 +41,7 @@ def setup():
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
     pen = pens.PenBasic(pg, fills.CurveFill(pg))
-    pen = pens.PenBasic(pg, fills.BasicFill(pg))
+    #pen = pens.PenBasic(pg, fills.BasicFill(pg))
 
     pg.beginDraw()
     pg.colorMode(HSB, 360, 100, 100)
@@ -84,8 +85,8 @@ def draw2():
     y_starts = []
 
     # Sky
-    pen.fill(colors[1])
-    pen.fill((0, 0, 85))
+    pen.fill(colors[2])
+    #pen.fill((0, 0, 85))
     for x in range(r, pwidth, r * 2):
         color_changed = False
         for y in range(r, pheight, r * 2):
@@ -94,8 +95,8 @@ def draw2():
                 color_changed = True
                 break
 
-            pen.fill((210, 15, map(y, 0, pheight, 80, 100)))
-            pen.fill((0, 0, 85))
+            #pen.fill((210, 15, map(y, 0, pheight, 80, 100)))
+            #pen.fill((0, 0, 85))
 
             pen.circle(PVector(x, y), r - 3)
 
@@ -108,21 +109,16 @@ def draw2():
     pg.circle(pwidth - 110, 150, sun_radius * 2 + 3)
     pen.fill(colors[0])
     pen.circle(PVector(pwidth - 110, 150), sun_radius + 2)
-    pen.fill(colors[1])
+    pen.fill(colors[3])
     pen.circle(PVector(pwidth - 110, 150), sun_radius)
 
     print(2 * n / 3 * (r - 5))
 
     # Buildings
-    # pen.fill(colors[1])
+    pen.fill(colors[1])
     pen.fill((0, 0, 0))
     for y_start, x in zip(y_starts, range(r, pwidth, r * 2)):
         for y in range(y_start, pheight, r * 2):
-            if random(1) < 0.03:
-                col = colors[3]
-                pen.fill((col[0], col[1] - 15, col[2] - 5))
-            else:
-                pen.fill((0, 0, 0))
             pen.circle(PVector(x, y), r - 3)
 
     points = []
@@ -131,8 +127,13 @@ def draw2():
 
 
 def draw():
-    global flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight, seed
+    global flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight, seed, palette_id
     if flag:
+        
+        colors, palette_id = tools.get_color_palette(4206)
+        colors = tools.hex_to_hsb(colors)
+        
+        
         flag = False
         pg.beginDraw()
 
@@ -165,4 +166,4 @@ def draw():
 
         # Display final drawing and save to .png in same folder
         image(pg, 0, 0, width, height)
-        tools.save_image(pg, seed)
+        tools.save_image(pg, seed, palette_id)
