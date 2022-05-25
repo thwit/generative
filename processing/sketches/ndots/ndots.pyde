@@ -1,4 +1,5 @@
-from texture_draw import PenLine
+from __future__ import division
+import pens
 
 class TileNDot:
     def __init__(self, x, y, w, h, n):
@@ -20,17 +21,19 @@ class TileNDot:
         pg.pushMatrix()
         pg.translate(self.x, self.y)
         
-        for i in range(1, len(self.dots)):
-            v1 = self.dots[i-1]
-            v2 = self.dots[i]
+        pg.beginShape()
         
-            PenLine(v1, v2).draw(pg, stroke_weight)
+        for d in self.dots:
+            
+            pg.curveVertex(d.x, d.y)
+            
+        pg.endShape()
             
         
         pg.popMatrix()
 
 def setup():
-    size(500, 150)
+    size(500, 500)
     
     #### COLOR PARAMTERS
     bg_col = 0xFFFFFFFC
@@ -38,7 +41,7 @@ def setup():
     
     #### LAYOUT PARAMETERS
     # Paper size
-    scale_ = 9
+    scale_ = 1
     
     pwidth, pheight = width*scale_, height*scale_
     
@@ -47,8 +50,8 @@ def setup():
     grid_margin = 30 * scale_
     
     # Tile size
-    tw = 50 * scale_
-    th = 50 * scale_
+    tw = 100 * scale_
+    th = 100 * scale_
     
     # Drawn tile size
     dw = tw - grid_margin
@@ -61,7 +64,7 @@ def setup():
     # STYLE PARAMETERS
     stroke_cap = ROUND
     stroke_weight = 2
-    n = 8
+    n = 12
     n_loop = 1
     
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)

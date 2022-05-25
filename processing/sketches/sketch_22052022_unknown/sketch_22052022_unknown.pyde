@@ -36,17 +36,19 @@ def setup():
     margin = 30 * scale_
 
     # STYLE PARAMETERS
-    stroke_weight = 1
+    stroke_weight = 2
 
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
-    pen = pens.PenBasic(pg, fills.CurveFill(pg))
+    #pen = pens.PenBasic(pg, fills.CurveFill(pg))
     pen = pens.PenBasic(pg, fills.BasicFill(pg))
+    #pen = pens.PenRandom(pg, fills.ScannerFill(pg))
 
     pg.beginDraw()
     pg.colorMode(HSB, 360, 100, 100)
     # pg.colorMode(RGB, 255, 255, 255)
     pen.strokeWeight(stroke_weight)
+    pg.strokeCap(SQUARE)
 
     pg.endDraw()
     # pen.set_clean(True)
@@ -64,61 +66,77 @@ def keyReleased():
 
 def draw2():
     global flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight, scale_, seed
-
+    
     s = pwidth // 2
 
     pen.noStroke()
-    pen.fill(colors[0])
-    pen.rect(PVector(0, 0), pwidth, pheight)
+    pen.fill((0,0,0))
+    #pen.rect(PVector(0, 0), pwidth, pheight)
+    
+    pen.noFill()
+    
+    pen.stroke(colors[0])
+    
+    minr = random(10, pwidth / 6)
+    maxr = random(pwidth / 6, pwidth)
+    
+    for _ in range(150):
+        x = random(0, pwidth)
+        y = random(0, pheight)
+        border_dist = min(min(x, pwidth - x), min(y, pheight - y))
+        
+        if border_dist < minr:
+            continue
+        
+        r = min(maxr, border_dist)
+        r = int(random(minr, maxr))
+        
+        pen.fill((0,0,0))
+        pen.circle(PVector(x, y), r)
+        pen.noFill()
+        
+        for i, r in enumerate(range(0, r, 5)):
+            pen.stroke(colors[i % len(colors)])
+            pen.circle(PVector(x, y), r)
+        
+        
 
-    pen.fill(colors[1])
-
-    r = None
-
-    while r is None or pwidth % (r * 2) != 0 or pheight % (r * 2) != 0:
-        r = int(random(10, 100))
-
-    r = 10 * scale_
-    s = 2 * (r - 3)
-    n = pwidth / (r * 2)
-
-    y_starts = [constrain(randomGaussian() * r * 12 + pheight / 2, 0, pheight) for x in range(r, pheight, r * 2)]
-
-    # Sky
-    pen.fill(colors[2])
-    #pen.fill((0, 0, 85))
-    for y_end, x in zip(y_starts, range(r, pwidth, r * 2)):
+def draw3():
+    global flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight, scale_, seed
+    
+    
+    pg.rectMode(CENTER)
+    
+    r = pwidth / 10
+    r_step = r / 5
+    
+    
+    x = r
+    pen.noFill()
+    
+    while x < pwidth:
         y = r
         
-        while y < y_end:
-            pen.circle(PVector(x, y), r - 3)
+        while y < pheight:
+            if random(1) < 0.15:
+                col = colors[int(random(len(colors)))]
+            else:
+                col = (0,5,0)
             
-            y += r * 2
-
-    # Sun
-    sun_radius = 85
-    pg.fill(*bg_col)
-    pg.circle(pwidth - 110, 150, sun_radius * 2 + 3)
-    pen.fill(colors[0])
-    pen.circle(PVector(pwidth - 110, 150), sun_radius + 2)
-    pen.fill(colors[3])
-    pen.circle(PVector(pwidth - 110, 150), sun_radius)
-
-
-    # Buildings
-    pen.fill(colors[1])
-    pen.fill((0, 0, 0))
-    for y_start, x in zip(y_starts, range(r, pwidth, r * 2)):
-        y = pheight - r
-        
-        while y > y_start:
-            pen.circle(PVector(x, y), r - 3)
+            r_ = r_step
+            while r_ <= r - 1:
+                pen.stroke((col[0],col[1], col[2], map(y, r, pheight-r, 150, 0)))
+                pg.pushMatrix()
+                pg.translate(x, y)
+                pg.rotate(radians(randomGaussian() * map(y, r, pheight-r, 1, 15)))
+                pen.rect(PVector(0,0), r_, r_)
+                pg.popMatrix()
+                r_ += r_step
             
-            y -= 2 * r
-
-    points = []
-
-    tools.to_panto_a4(points, pwidth, pheight)
+            y += r
+            
+        x += r
+    pg.rectMode(CORNER)
 
 
 def draw():
@@ -126,7 +144,7 @@ def draw():
     if flag:
         
         colors, palette_id = tools.get_color_palette()
-        #colors, palette_id = tools.get_color_palette(4206)
+        colors, palette_id = tools.get_color_palette(4206)
         colors = tools.hex_to_hsb(colors)
         
         print(palette_id, seed)
@@ -136,8 +154,11 @@ def draw():
 
         # Set background color
         pg.fill(*bg_col)
+        pg.fill(0,5,95)
         pg.noStroke()
         pg.rect(-1, -1, pwidth + margin * 2 + 1, pheight + margin * 2 + 1)
+        
+        
         pg.noFill()
 
         pen.fill(colors[1])
@@ -150,7 +171,7 @@ def draw():
         pg.pushMatrix()
         pg.translate(margin, margin)
 
-        draw2()
+        draw3()
 
         pg.loadPixels()
         # tools.noisify_brightness(pg.pixels, pg)
