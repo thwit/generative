@@ -7,7 +7,7 @@ import fills
 
 def setup():
     global pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, scale_, seed, palette_id
-    size(500, 700)
+    size(750, 750)
 
     # SEEDS
     seed = int(random(1000000))
@@ -88,6 +88,7 @@ def draw3():
     pen.rect(PVector(0,0), pwidth, pheight)
     
     for i, x in enumerate(range(pwidth // 6, pwidth - pwidth // 6, pwidth // 6)):
+        break
         pen.stroke(colors[int(random(len(colors)))])
         v = PVector(x, 100)
         v_ = PVector(x, 100 + pheight // 8 * (i + 1))
@@ -96,10 +97,17 @@ def draw3():
         
     
     for i, x in enumerate(range(pwidth // 6, pwidth - pwidth // 6, pwidth // 6)):
+        break
         pen.stroke(colors[int(random(len(colors)))])
         v = PVector(x, pheight // 8 * (i + 1) + 150)
         v_ = PVector(x, pheight - 25)
         pen.line(v, v_)
+        
+    for i, x in enumerate(range(0, pwidth - pwidth // 7, pwidth // 7)):
+        pen.stroke(colors[0])
+        v = PVector(x, 150)
+        v_ = PVector(x, 500)
+        pen.line(v, v_, d= (i + 1) * 5)
         
     x = 100
     y = 100

@@ -40,6 +40,7 @@ def setup():
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
     pen = pens.PenBasic(pg, fills.BasicFill(pg))
+    pen = pens.PenBrush(pg, fills.BasicFill(pg))
     
     pg.beginDraw()
     pg.colorMode(HSB, 360, 100, 100)
@@ -65,6 +66,7 @@ def noise_(col, row):
     size_ = 1
     col *= 0.05
     row *= 0.05
+    return noise(col, row)
     #return sin(col) * noise( col, row) * TWO_PI
     return noise(col, row, strength * size_* noise(col, row)) * TWO_PI
 
@@ -85,14 +87,21 @@ def draw2():
     #r = 2 * scale_
     s = 2 * (r - 3)
     n = pwidth / (r * 2)
+    
+    r = 100
 
     pen.noStroke()
+    pen.noFill()
+    pen.stroke(colors[0])
     for x in range(r, pwidth, r * 2):
         for y in range(r, pheight, r * 2):
             v = PVector(x,y)
-            intensity = map(flow.angle(v), 0, TWO_PI, 30, 70)
-            pen.fill((20, intensity, intensity))
-            pen.circle(v, r - 2)
+            u = PVector(0, 1)
+            u.rotate(flow.angle(v))
+            
+            v_ = v + u * 20
+            
+            pen.line(v, v_, d=5)
         
 
 def draw():

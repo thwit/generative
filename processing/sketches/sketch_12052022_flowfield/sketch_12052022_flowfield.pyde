@@ -19,7 +19,7 @@ def setup():
     
     #### LAYOUT PARAMETERS
     # Scale applied to width and height to get PGraphics drawing size
-    scale_ = 4
+    scale_ = 1
     
     # PGraphics drawing size
     pwidth, pheight = width*scale_, height*scale_
