@@ -17,8 +17,8 @@ def noise_(col, row):
 
 def setup():
     global flow, img, pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, scale_, seed, palette_id
-    size(750, 750)
-
+    size(1500 // 2, 1187 // 2)
+    frameRate(60)
     # SEEDS
     seed = int(random(1000000))
     randomSeed(seed)
@@ -37,7 +37,7 @@ def setup():
 
     # LAYOUT PARAMETERS
     # Scale applied to width and height to get PGraphics drawing size
-    scale_ = 4
+    scale_ = 2
 
     # PGraphics drawing size
     pwidth, pheight = width * scale_, height * scale_
@@ -66,16 +66,22 @@ def setup():
 
     flag = True
     
-    img = loadImage('DSC_5094-Edit.jpg')
+    img = loadImage('starry.jpg')
 
-    if img.width > pwidth and img.width - pwidth > img.height - pheight:
+    if img.width > pwidth and img.width / pwidth > img.height / pheight:
         img.resize(pwidth,0)
     else:
         img.resize(0, pheight)
         
     print(img.width, pwidth)
     print(img.height, pheight)
-    flow = gm.FlowField(0, 0, pwidth, pheight)
+    
+    pg.beginDraw()
+    
+    #pg.image(img, 0, 0)
+    pg.endDraw()
+
+    flow = gm.FlowField(0, 0, pwidth + 201, pheight + 201)
     flow.set_angles(noise_)
 
 
@@ -113,25 +119,46 @@ def draw():
     
     w = int(random(10, 50))
     h = int(random(10, 150))
-    h = 100
+    
+    h = int(constrain(map(frameCount, 0, 60 * 3, 250, 20), 20, 250))
+    h = 30
+    
     x = int(random(img.width - w))
     y = int(random(img.height - h))
     
     v = PVector(x + w / 2, y)
-    v_ = PVector(x + w / 2, y + h)
+    v__ = PVector(pwidth / 2, pheight / 2)
     
-    u = (v_ - v)
-    u.normalize().rotate(flow.angle(v))
+    u = (v__ - v)
+    #u.normalize().rotate(flow.angle(v))
+    u.normalize()#.rotate(radians(133))
     
     v_ = v + u * h
     
-    roi = img.get(x, y, w, h)
-    col = mean_color(roi)
+    #roi = img.get(x, y, w, h)
+    #col = mean_color(roi)
+    col = img.get(int(v.x), int(v.y))
+    col = (pg.hue(col), pg.saturation(col), pg.brightness(col))
     #col = colors[int(random(len(colors)))]
     pen.stroke(col)
-    pen.line(v, v_, d=10)
-    pg.endDraw()
+    
+    #pen.strokeWeight(r)
+    u = (v__ - v)
+    u.normalize().rotate(radians(8))
+    
+    k = v + u * (h / 2)
+    pen.shape_curve([v, k, v_], d=7)
 
+
+    
+    '''
+    d = int(constrain(map(frameCount, 0, 60 * 3, 50, 7), 50, 7))
+    d = 7
+    pen.line(v, v_, d)
+    '''
+    
+    
+    pg.endDraw()
     # Display final drawing and save to .png in same folder
     fill(0,5,95)
     rect(0,0,width,height)
