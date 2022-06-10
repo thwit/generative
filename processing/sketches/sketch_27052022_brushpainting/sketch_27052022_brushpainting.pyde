@@ -16,7 +16,7 @@ def noise_(col, row):
 
 
 def setup():
-    global flow, img, pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, scale_, seed, palette_id
+    global flow, flow2, img, pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, scale_, seed, palette_id
     size(1500 // 2, 1187 // 2)
     frameRate(60)
     # SEEDS
@@ -66,7 +66,7 @@ def setup():
 
     flag = True
     
-    img = loadImage('starry.jpg')
+    img = loadImage('white-bg - yellow.png')
 
     if img.width > pwidth and img.width / pwidth > img.height / pheight:
         img.resize(pwidth,0)
@@ -83,6 +83,11 @@ def setup():
 
     flow = gm.FlowField(0, 0, pwidth + 201, pheight + 201)
     flow.set_angles(noise_)
+    
+    noiseSeed(seed)
+    
+    flow2 = gm.FlowField(0, 0, pwidth + 201, pheight + 201)
+    flow2.set_angles(noise_)
 
 
 
@@ -111,7 +116,7 @@ def mean_color(img, alpha_=255):
     return (h, s, b, alpha_);
 
 def draw():
-    global flow, img, flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight, seed, palette_id
+    global flow, flow2, img, flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight, seed, palette_id
 
     pg.beginDraw()
     pen.noFill()
@@ -130,15 +135,26 @@ def draw():
     v__ = PVector(pwidth / 2, pheight / 2)
     
     u = (v__ - v)
-    #u.normalize().rotate(flow.angle(v))
-    u.normalize()#.rotate(radians(133))
+    #u.normalize()#.rotate(radians(133))
+    
+    
+    roi = img.get(x, y, w, h)
+    col = mean_color(roi)
+    #col = img.get(int(v.x), int(v.y))
+    #col = (pg.hue(col), pg.saturation(col), pg.brightness(col))
+    h_, s, b, _ = col
+    
+    if s > 3:
+        col = (h_, s - int(random(3)) * 10, b - int(random(3)) * 7)
+        d = 12
+        u.normalize().rotate(flow.angle(v))
+    else:
+        print('ye')
+        d = 5
+        u.normalize().rotate(flow2.angle(v))
     
     v_ = v + u * h
     
-    #roi = img.get(x, y, w, h)
-    #col = mean_color(roi)
-    col = img.get(int(v.x), int(v.y))
-    col = (pg.hue(col), pg.saturation(col), pg.brightness(col))
     #col = colors[int(random(len(colors)))]
     pen.stroke(col)
     
@@ -147,8 +163,8 @@ def draw():
     u.normalize().rotate(radians(8))
     
     k = v + u * (h / 2)
-    pen.shape_curve([v, k, v_], d=7)
-
+    #pen.shape_curve([v, k, v_], d=7)
+    pen.line(v, v_, d=d)
 
     
     '''
