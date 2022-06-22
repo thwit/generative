@@ -16,7 +16,7 @@ def noise_(col, row):
 
 
 def setup():
-    global flow, flow2, img, pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, scale_, seed, palette_id
+    global flow, flow2, img, pg, colors, strk_col, fill_col, bg_col, pwidth, pheight, flag, margin, pen, stroke_weight, scale_, seed, palette_id, visited, v
     size(1500 // 2, 1187 // 2)
     frameRate(60)
     # SEEDS
@@ -88,6 +88,9 @@ def setup():
     
     flow2 = gm.FlowField(0, 0, pwidth + 201, pheight + 201)
     flow2.set_angles(noise_)
+    
+    visited = set()
+    v = PVector(random(pwidth), random(pheight))
 
 
 
@@ -114,7 +117,7 @@ def hsb_distance(c0, c1):
     
     return dh*dh+ds*ds+dv*dv
 
-def most_similar_color(v, img, w, h):
+def most_similar_color(v, img, w, h, visited=set()):
     v_start = v - PVector(w / 2, h / 2)
     img.loadPixels()
     
@@ -125,7 +128,7 @@ def most_similar_color(v, img, w, h):
     
     for x in range(int(v_start.x), int(v_start.x) + w):
         for y in range(int(v_start.y), int(v_start.y) + h):
-            if x == v.x and y == v.y:
+            if x == v.x and y == v.y or (x, y) in visited or x < 0 or x > pwidth or y < 0 or y > pheight:
                 continue
             try:
                 c1 = img.pixels[y*pwidth+x]
@@ -136,6 +139,7 @@ def most_similar_color(v, img, w, h):
                 min_dist = distance
                 min_pos = PVector(x, y)
                 
+    visited.add((min_pos.x, min_pos.y))
     return min_pos
         
 def mean_color(img, alpha_=255):
@@ -157,7 +161,7 @@ def mean_color(img, alpha_=255):
     return (h, s, b, alpha_);
 
 def draw():
-    global flow, flow2, img, flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight, seed, palette_id
+    global flow, flow2, img, flag, bg_col, strk_col, fill_col, pwidth, margin, pheight, colors, pen, stroke_weight, seed, palette_id, visited, v
 
     pg.beginDraw()
     pen.noFill()
@@ -172,8 +176,7 @@ def draw():
     x = int(random(img.width - w))
     y = int(random(img.height - h))
     
-    v = PVector(x + w / 2, y)
-    v_ = most_similar_color(v, img, 25, 25)
+    v_ = most_similar_color(v, img, 25, 25, visited)
     
     
     #col = colors[int(random(len(colors)))]
@@ -182,6 +185,9 @@ def draw():
     pen.stroke(col)
 
     pen.line(v, v_)
+    print(v)
+    v = v_
+    #pen.circle(v, max((v-v_).mag(), 5))
 
     
     '''
