@@ -66,7 +66,7 @@ def setup():
 
     flag = True
     
-    img = loadImage('white-bg - yellow.png')
+    img = loadImage('white-bg.png')
 
     if img.width > pwidth and img.width / pwidth > img.height / pheight:
         img.resize(pwidth,0)
@@ -84,7 +84,7 @@ def setup():
     flow = gm.FlowField(0, 0, pwidth + 201, pheight + 201)
     flow.set_angles(noise_)
     
-    noiseSeed(seed)
+    noiseSeed(seed + 1)
     
     flow2 = gm.FlowField(0, 0, pwidth + 201, pheight + 201)
     flow2.set_angles(noise_)
@@ -132,7 +132,7 @@ def draw():
     y = int(random(img.height - h))
     
     v = PVector(x + w / 2, y)
-    v__ = PVector(pwidth / 2, pheight / 2)
+    v__ = v + PVector(0, 1)
     
     u = (v__ - v)
     #u.normalize()#.rotate(radians(133))
@@ -149,6 +149,7 @@ def draw():
         d = 12
         u.normalize().rotate(flow.angle(v))
     else:
+        col = (h_, s - int(random(3)) * 10, b - int(random(3)) * 7)
         print('ye')
         d = 5
         u.normalize().rotate(flow2.angle(v))
