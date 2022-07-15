@@ -90,7 +90,8 @@ def draw2():
         randomSeed(rseed)
         sizes = [random(pwidth / 4, pwidth / 1.5) for _ in range(3)]
         sizes = sorted(sizes, reverse=True)
-        for j in range(3):
+        for j, j_ in enumerate(range(2, -1, -1)):
+            pen.fill((colors[3][0] + j * 5, colors[3][1] + j_ * 10, colors[3][2] - j_ * 10))
             c = PVector(pwidth / 2, pheight / 2)
             rp = gm.CircularRandomPolygon(c, sizes[j], int(random(4,8)))
             pen.shape(rp.points)
