@@ -46,7 +46,7 @@ def setup():
     margin = 30 * scale_ * 1
 
     # STYLE PARAMETERS
-    stroke_weight = 2
+    stroke_weight = 2 * scale_
 
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
@@ -85,6 +85,7 @@ def draw2():
     seeds = [int(random(100000)) for _ in range(100)]
     
     rseed = int(random(1000))
+    
     for i in range(1):
         randomSeed(rseed)
         sizes = [random(pwidth / 4, pwidth / 1.5) for _ in range(3)]
@@ -98,8 +99,8 @@ def draw2():
     
         
     pen.noStroke()
-    pen.fill((0,0,75,1))
-    for _ in range(1000):
+    pen.fill((0,0,75,3))
+    for _ in range(1000 * scale_):
         
         rp = gm.CircularRandomPolygon(PVector(random(-100, pwidth+100), random(-100, pheight+100)), random(25,150), int(random(4,8)))
         pen.shape_mix(rp.points)
@@ -107,17 +108,14 @@ def draw2():
     pen.noFill()
     pen.strokeWeight(1)
     
-    for _ in range(1000):
-        pen.stroke((0,0,75,1))
+    for _ in range(1000 * scale_):
+        pen.stroke((0,0,75,13))
         pen.circle(PVector(random(-500, pwidth + 500), random(-500, pheight + 500)), random(200,1000))
         
     pen.strokeWeight(1)
-    for _ in range(1000):
-        pen.stroke((0,0,75,1))
+    for _ in range(1000 * scale_):
+        pen.stroke((0,0,66,13))
         pen.line(PVector(random(-500, pwidth + 500), random(-500, pheight + 500)), PVector(random(-500, pwidth + 500), random(-500, pheight + 500)))
-        
-    
-        
     
     
     
@@ -130,6 +128,7 @@ def draw():
         colors, palette_id = tools.get_color_palette(4282)
         colors = tools.hex_to_hsb(colors)
         seed = int(random(100000))
+        seed = 81321
         noiseSeed(seed)
         randomSeed(seed)
         
@@ -159,7 +158,7 @@ def draw():
         draw2()
 
         pg.loadPixels()
-        tools.noisify_brightness(pg.pixels, pg, noise=0.025)
+        tools.noisify_brightness(pg.pixels, pg, noise=0.045)
         pg.updatePixels()
 
         # End drawing on PGraphics

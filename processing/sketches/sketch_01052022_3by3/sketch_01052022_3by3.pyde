@@ -55,7 +55,7 @@ def setup():
     # Create and setup PGraphics
     pg = createGraphics(pwidth + margin * 2, pheight + margin * 2)
     pen = pens.PenBasic(pg, fills.CurveFill(pg))
-    #pen = pens.PenBasic(pg, fills.BasicFill(pg))
+    pen = pens.PenRandom(pg, fills.ScannerFill(pg))
     
     pg.beginDraw()
     pg.colorMode(HSB, 360, 100, 100)
