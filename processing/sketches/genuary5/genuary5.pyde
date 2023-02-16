@@ -175,6 +175,9 @@ def update(objects, s):
     pen.stroke((0,0,100,50))
     pg.pushMatrix()
     pg.translate(pwidth / 2, pheight / 2)
+    
+    x, y = -13, -7
+    ftsize = 12
     for c in a:
         if c == 'F':
             pg.line(0, 0, 0, linelength)
@@ -189,10 +192,26 @@ def update(objects, s):
             pg.pushMatrix()
         elif c == ']':
             pg.popMatrix()
+            
+        
+        pg.textSize(ftsize)
+        if c in '[]':
+            pg.fill(0,100,100)
+        elif c in 'FXYZ':
+            pg.fill(0,0,100)
+        elif c in '+-':
+            pg.fill(100,100,100)
+        pg.text(c, x, y)
+        x += ftsize
+        if x > pwidth:
+            x = random(-13,-5)
+            y += ftsize
     
     linelength = 25
     pen.stroke((200,50,100,125))
     
+    x, y = -13, -7
+    ftsize = 12
     for c in a:
         if c == 'F':
             pg.line(0, 0, 0, linelength)
@@ -208,11 +227,6 @@ def update(objects, s):
         elif c == ']':
             pg.popMatrix()
             
-    pg.popMatrix()
-    
-    x, y = -13, -7
-    ftsize = 12
-    for c in a:
         pg.textSize(ftsize)
         if c in '[]':
             pg.fill(0,100,100)
@@ -220,11 +234,14 @@ def update(objects, s):
             pg.fill(0,0,100)
         elif c in '+-':
             pg.fill(100,100,100)
-        pg.text(c, x, y)
-        x += ftsize
-        if x > pwidth:
-            x = random(-13,-5)
-            y += ftsize
+        pg.text(c, 0, 0)
+        #x += ftsize
+       # if x > pwidth:
+        #    x = random(-13,-5)
+         #   y += ftsize
+            
+    pg.popMatrix()
+    
        
 
 def draw():
